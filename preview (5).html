@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WanderLux — Travel & Tours</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --green:#1a3a2a;
+  --green-mid:#2c5f42;
+  --gold:#c9a84c;
+  --gold-light:#e8c97a;
+  --cream:#f7f2e8;
+  --cream-dark:#ede7d5;
+  --text-dark:#1a1a18;
+  --text-mid:#4a4a42;
+  --text-muted:#8a8a7a;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text-dark);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;transition:all 0.4s ease}
+nav.scrolled{background:var(--green);box-shadow:0 2px 20px rgba(0,0,0,0.3)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:600;color:#fff;letter-spacing:0.05em;text-decoration:none}
+.logo span{color:var(--gold)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:rgba(255,255,255,0.85);text-decoration:none;font-size:0.85rem;font-weight:400;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.3s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{background:var(--gold);color:var(--green)!important;padding:0.5rem 1.2rem;border-radius:2px;font-weight:500!important}
+.nav-cta:hover{background:var(--gold-light);color:var(--green)!important}
+
+/* HERO */
+.hero{height:100vh;position:relative;overflow:hidden}
+.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease;background-size:cover;background-position:center}
+.hero-slide.active{opacity:1}
+.hero-slide:nth-child(1){background-image:url('https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=1600&q=80')}
+.hero-slide:nth-child(2){background-image:url('https://images.unsplash.com/photo-1571536802807-30451e3955d8?w=1600&q=80')}
+.hero-slide:nth-child(3){background-image:url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&q=80')}
+.hero-slide:nth-child(4){background-image:url('https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1600&q=80')}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom, rgba(15,35,25,0.35) 0%, rgba(15,35,25,0.65) 100%)}
+.hero-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:2rem}
+.hero-badge{display:inline-block;border:1px solid var(--gold);color:var(--gold);padding:0.35rem 1.2rem;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem;animation:fadeUp 0.8s 0.2s both}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,7vw,6rem);font-weight:300;line-height:1.1;margin-bottom:1.5rem;animation:fadeUp 0.8s 0.4s both}
+.hero h1 em{font-style:italic;color:var(--gold-light)}
+.hero p{font-size:1.05rem;font-weight:300;color:rgba(255,255,255,0.8);max-width:500px;line-height:1.7;margin-bottom:2.5rem;animation:fadeUp 0.8s 0.6s both}
+.hero-btns{display:flex;gap:1rem;animation:fadeUp 0.8s 0.8s both}
+.btn-primary{background:var(--gold);color:var(--green);padding:0.85rem 2.2rem;font-size:0.85rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;border:none;cursor:pointer;transition:all 0.3s;text-decoration:none}
+.btn-primary:hover{background:var(--gold-light)}
+.btn-outline{background:transparent;color:#fff;padding:0.85rem 2.2rem;font-size:0.85rem;font-weight:400;letter-spacing:0.08em;text-transform:uppercase;border:1px solid rgba(255,255,255,0.5);cursor:pointer;transition:all 0.3s;text-decoration:none}
+.btn-outline:hover{border-color:#fff;background:rgba(255,255,255,0.1)}
+.hero-dots{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;gap:0.5rem}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s}
+.hero-dot.active{background:var(--gold);width:24px;border-radius:3px}
+.hero-scroll{position:absolute;bottom:2rem;right:2rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.6);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase}
+.scroll-line{width:1px;height:50px;background:rgba(255,255,255,0.4);animation:scrollLine 2s ease infinite}
+@keyframes scrollLine{0%,100%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* FEATURES */
+.features{background:var(--green);padding:4rem 2rem}
+.features-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.1)}
+.feature-card{background:var(--green);padding:2.5rem 2rem;text-align:center;transition:background 0.3s}
+.feature-card:hover{background:var(--green-mid)}
+.feature-icon{font-size:2rem;margin-bottom:1rem;color:var(--gold)}
+.feature-card h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:#fff;margin-bottom:0.5rem}
+.feature-card p{font-size:0.8rem;color:rgba(255,255,255,0.55);line-height:1.6;letter-spacing:0.03em}
+
+/* SECTIONS */
+section{padding:5rem 2rem}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:3.5rem}
+.section-tag{display:inline-block;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:0.3rem;margin-bottom:1rem}
+.section-header h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:300;color:var(--green);line-height:1.2}
+.section-header h2 em{font-style:italic;color:var(--gold)}
+
+/* DESTINATION GRID */
+.dest-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem}
+.dest-card{position:relative;overflow:hidden;cursor:pointer;aspect-ratio:3/4}
+.dest-card.wide{grid-column:span 2;aspect-ratio:auto}
+.dest-card img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease}
+.dest-card:hover img{transform:scale(1.08)}
+.dest-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,40,25,0.85) 0%,transparent 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem}
+.dest-card h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:#fff;margin-bottom:0.2rem}
+.dest-card span{font-size:0.72rem;color:rgba(255,255,255,0.65);letter-spacing:0.1em;text-transform:uppercase}
+.dest-card .tag{position:absolute;top:1rem;left:1rem;background:var(--gold);color:var(--green);font-size:0.65rem;padding:0.25rem 0.6rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:500}
+
+/* INTL SECTION */
+.intl-section{background:var(--cream-dark)}
+.intl-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem}
+
+/* THEMES */
+.themes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.theme-card{position:relative;overflow:hidden;cursor:pointer;border-radius:4px}
+.theme-card img{width:100%;height:220px;object-fit:cover;transition:transform 0.6s ease;display:block}
+.theme-card:hover img{transform:scale(1.06)}
+.theme-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,40,25,0.8) 0%,transparent 50%);display:flex;flex-direction:column;justify-content:flex-end;padding:1.5rem}
+.theme-overlay h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:#fff;margin-bottom:0.2rem}
+.theme-overlay p{font-size:0.78rem;color:rgba(255,255,255,0.65);letter-spacing:0.08em;text-transform:uppercase}
+
+/* BANNER */
+.banner{background:var(--green);padding:5rem 2rem;text-align:center;position:relative;overflow:hidden}
+.banner::before{content:'';position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=60');background-size:cover;background-position:center;opacity:0.15}
+.banner-inner{position:relative;max-width:600px;margin:0 auto}
+.banner h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:300;color:#fff;line-height:1.2;margin-bottom:1rem}
+.banner h2 em{font-style:italic;color:var(--gold-light)}
+.banner p{color:rgba(255,255,255,0.7);font-size:1rem;line-height:1.7;margin-bottom:2rem}
+.discount{display:inline-block;font-family:'Cormorant Garamond',serif;font-size:4rem;font-weight:600;color:var(--gold);line-height:1;margin-bottom:0.5rem}
+
+/* ABOUT */
+.about-section{background:#fff}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.about-images{position:relative;height:500px}
+.about-img-main{position:absolute;top:0;left:0;width:75%;height:80%;object-fit:cover}
+.about-img-accent{position:absolute;bottom:0;right:0;width:55%;height:55%;object-fit:cover;border:6px solid #fff}
+.about-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--cream);padding:0.8rem 1.5rem;margin-bottom:1.5rem}
+.about-badge span{font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-mid)}
+.about-content h2{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--green);line-height:1.2;margin-bottom:1.5rem}
+.about-content p{color:var(--text-mid);line-height:1.8;margin-bottom:1rem;font-size:0.95rem}
+.stats-row{display:flex;gap:2.5rem;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--cream-dark)}
+.stat{text-align:center}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:600;color:var(--green);line-height:1}
+.stat-label{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-top:0.3rem}
+
+/* FOOTER */
+footer{background:var(--text-dark);padding:4rem 2rem 2rem}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:3rem;margin-bottom:3rem}
+.footer-brand .logo{font-size:2rem;display:block;margin-bottom:1rem}
+.footer-brand p{font-size:0.85rem;color:rgba(255,255,255,0.45);line-height:1.8;max-width:280px}
+.footer-col h4{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;font-weight:500}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:0.6rem}
+.footer-col a{color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;transition:color 0.3s}
+.footer-col a:hover{color:#fff}
+.footer-contact p{font-size:0.82rem;color:rgba(255,255,255,0.5);line-height:1.8;margin-bottom:0.3rem}
+.footer-contact strong{color:rgba(255,255,255,0.8)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center}
+.footer-bottom p{font-size:0.78rem;color:rgba(255,255,255,0.3)}
+.social-links{display:flex;gap:1rem}
+.social-link{width:32px;height:32px;border:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);font-size:0.8rem;text-decoration:none;transition:all 0.3s;border-radius:2px}
+.social-link:hover{border-color:var(--gold);color:var(--gold)}
+
+/* SEARCH BAR */
+.search-bar{background:#fff;border-radius:4px;padding:1.5rem;max-width:750px;margin:-2.5rem auto 0;position:relative;z-index:10;box-shadow:0 10px 40px rgba(0,0,0,0.15)}
+.search-row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:0;border:1px solid var(--cream-dark)}
+.search-field{padding:0.9rem 1.2rem;border-right:1px solid var(--cream-dark)}
+.search-field:last-of-type{border-right:none}
+.search-field label{display:block;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.2rem;font-weight:500}
+.search-field input,.search-field select{border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--text-dark);background:transparent;width:100%}
+.search-btn{background:var(--green);color:#fff;border:none;padding:0 2rem;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:background 0.3s}
+.search-btn:hover{background:var(--green-mid)}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo">Wander<span>Lux</span></a>
+    <ul class="nav-links">
+      <li><a href="#destinations">Destinations</a></li>
+      <li><a href="#international">International</a></li>
+      <li><a href="#themes">Experiences</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact" class="nav-cta">Book Now</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="hero" id="hero">
+  <div class="hero-slide active"></div>
+  <div class="hero-slide"></div>
+  <div class="hero-slide"></div>
+  <div class="hero-slide"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">✦ Award Winning Travel Company</div>
+    <h1>Explore the World<br>with <em>Wanderlux</em></h1>
+    <p>Curated journeys across India and beyond — crafted for those who seek more than a vacation.</p>
+    <div class="hero-btns">
+      <a href="#destinations" class="btn-primary">Explore Destinations</a>
+      <a href="#about" class="btn-outline">Our Story</a>
+    </div>
+  </div>
+  <div class="hero-dots" id="heroDots">
+    <div class="hero-dot active" onclick="goToSlide(0)"></div>
+    <div class="hero-dot" onclick="goToSlide(1)"></div>
+    <div class="hero-dot" onclick="goToSlide(2)"></div>
+    <div class="hero-dot" onclick="goToSlide(3)"></div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<div style="background:var(--cream);padding:0 2rem 3rem">
+  <div class="search-bar">
+    <div class="search-row">
+      <div class="search-field">
+        <label>Destination</label>
+        <input type="text" placeholder="Where to go?">
+      </div>
+      <div class="search-field">
+        <label>Departure</label>
+        <input type="date">
+      </div>
+      <div class="search-field">
+        <label>Trip Type</label>
+        <select><option>All Packages</option><option>Domestic</option><option>International</option><option>Honeymoon</option><option>Adventure</option></select>
+      </div>
+      <button class="search-btn">Search</button>
+    </div>
+  </div>
+</div>
+
+<div class="features">
+  <div class="features-inner">
+    <div class="feature-card">
+      <div class="feature-icon">🏔️</div>
+      <h3>Weekend Escapes</h3>
+      <p>Quick getaways designed for the short on time but big on wanderlust</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💑</div>
+      <h3>Honeymoon Tours</h3>
+      <p>Romantic itineraries to make your first journey together unforgettable</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💼</div>
+      <h3>Corporate Trips</h3>
+      <p>Seamless travel management for teams and corporate retreats</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🗺️</div>
+      <h3>Custom Journeys</h3>
+      <p>Your dream trip, designed exactly around your wishes and timeline</p>
+    </div>
+  </div>
+</div>
+
+<section id="destinations" style="background:var(--cream)">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Incredible India</div>
+      <h2>Top Trending <em>Domestic</em> Destinations</h2>
+    </div>
+    <div class="dest-grid">
+      <div class="dest-card wide" style="grid-row:span 2">
+        <div class="tag">Most Popular</div>
+        <img src="https://images.unsplash.com/photo-1585016495481-91613e9f4f6e?w=600&q=80" alt="Kashmir">
+        <div class="dest-card-overlay">
+          <h3>Kashmir</h3>
+          <span>Heaven on Earth</span>
+        </div>
+      </div>
+      <div class="dest-card">
+        <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=400&q=80" alt="Rajasthan">
+        <div class="dest-card-overlay">
+          <h3>Rajasthan</h3>
+          <span>Land of Kings</span>
+        </div>
+      </div>
+      <div class="dest-card">
+        <img src="https://images.unsplash.com/photo-1472168884441-bffc33c5e2e8?w=400&q=80" alt="Himachal">
+        <div class="dest-card-overlay">
+          <h3>Himachal Pradesh</h3>
+          <span>Mountains & Valleys</span>
+        </div>
+      </div>
+      <div class="dest-card">
+        <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=400&q=80" alt="Kerala">
+        <div class="dest-card-overlay">
+          <h3>Kerala</h3>
+          <span>God's Own Country</span>
+        </div>
+      </div>
+      <div class="dest-card">
+        <img src="https://images.unsplash.com/photo-1571536802807-30451e3955d8?w=400&q=80" alt="Ladakh">
+        <div class="dest-card-overlay">
+          <h3>Ladakh</h3>
+          <span>Land of High Passes</span>
+        </div>
+      </div>
+      <div class="dest-card">
+        <img src="https://images.unsplash.com/photo-1599661046289-e31897846e41?w=400&q=80" alt="Uttarakhand">
+        <div class="dest-card-overlay">
+          <h3>Uttarakhand</h3>
+          <span>Devbhoomi</span>
+        </div>
+      </div>
+      <div class="dest-card">
+        <img src="https://images.unsplash.com/photo-1477587458883-47145ed68a04?w=400&q=80" alt="Goa">
+        <div class="dest-card-overlay">
+          <h3>Goa</h3>
+          <span>Sun, Sand & Sea</span>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem">
+      <a href="#" class="btn-primary">View All India Destinations</a>
+    </div>
+  </div>
+</section>
+
+<section class="intl-section" id="international">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Beyond Borders</div>
+      <h2>International <em>Holiday</em> Destinations</h2>
+    </div>
+    <div class="intl-grid">
+      <div class="dest-card">
+        <img src="https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=400&q=80" alt="Dubai">
+        <div class="dest-card-overlay">
+          <h3>Dubai</h3>
+          <span>UAE</span>
+        </div>
+      </div>
+      <div class="dest-card">
+        <img src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=400&q=80" alt="Singapore">
+        <div class="dest-card-overlay">
+          <h3>Singapore</h3>
+          <span>The Lion City</span>
+        </div>
+      </div>
+      <div class="dest-card wide" style="grid-column:span 2;aspect-ratio:auto">
+        <div class="tag">Trending</div>
+        <img src="https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=700&q=80" alt="Maldives">
+        <div class="dest-card-overlay">
+          <h3>Maldives</h3>
+          <span>Island Paradise</span>
+        </div>
+      </div>
+      <div class="dest-card">
+        <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400&q=80" alt="Bali">
+        <div class="dest-card-overlay">
+          <h3>Bali</h3>
+          <span>Indonesia</span>
+        </div>
+      </div>
+      <div class="dest-card wide" style="grid-column:span 2;aspect-ratio:auto">
+        <img src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=700&q=80" alt="Thailand">
+        <div class="dest-card-overlay">
+          <h3>Thailand</h3>
+          <span>The Golden Land</span>
+        </div>
+      </div>
+      <div class="dest-card" style="grid-column:span 2;aspect-ratio:auto">
+        <img src="https://images.unsplash.com/photo-1580660943234-1dc2e0d18b8d?w=600&q=80" alt="Switzerland">
+        <div class="dest-card-overlay">
+          <h3>Switzerland</h3>
+          <span>The Swiss Alps</span>
+        </div>
+      </div>
+      <div class="dest-card">
+        <img src="https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=400&q=80" alt="Paris">
+        <div class="dest-card-overlay">
+          <h3>Paris</h3>
+          <span>France</span>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem">
+      <a href="#" class="btn-primary" style="background:var(--green);color:#fff">View All International</a>
+    </div>
+  </div>
+</section>
+
+<section id="themes" style="background:#fff">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Travel Your Way</div>
+      <h2>Popular <em>Experiences</em> & Themes</h2>
+    </div>
+    <div class="themes-grid">
+      <div class="theme-card">
+        <img src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=600&q=80" alt="Honeymoon">
+        <div class="theme-overlay">
+          <h3>Honeymoon</h3>
+          <p>Romance & luxury</p>
+        </div>
+      </div>
+      <div class="theme-card">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Beach">
+        <div class="theme-overlay">
+          <h3>Beach Escapes</h3>
+          <p>Sun, sand & waves</p>
+        </div>
+      </div>
+      <div class="theme-card">
+        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80" alt="Trekking">
+        <div class="theme-overlay">
+          <h3>Trekking & Adventure</h3>
+          <p>For the fearless soul</p>
+        </div>
+      </div>
+      <div class="theme-card">
+        <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&q=80" alt="Pilgrimage">
+        <div class="theme-overlay">
+          <h3>Pilgrimage</h3>
+          <p>Spiritual journeys</p>
+        </div>
+      </div>
+      <div class="theme-card">
+        <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80" alt="Hill Stations">
+        <div class="theme-overlay">
+          <h3>Hill Stations</h3>
+          <p>Cool mountain air</p>
+        </div>
+      </div>
+      <div class="theme-card">
+        <img src="https://images.unsplash.com/photo-1516939884455-1445c8652f83?w=600&q=80" alt="Wildlife">
+        <div class="theme-overlay">
+          <h3>Wildlife & Safaris</h3>
+          <p>Into the wild</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="banner">
+  <div class="banner-inner">
+    <div class="discount">25% OFF</div>
+    <h2>Take a Trip <em>Together</em></h2>
+    <p>Book group trips of 6 or more and enjoy exclusive group discounts. Create memories that last a lifetime with the people who matter most.</p>
+    <a href="#contact" class="btn-primary">Get Special Offer</a>
+  </div>
+</div>
+
+<section class="about-section" id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-images">
+        <img class="about-img-main" src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=700&q=80" alt="Travel">
+        <img class="about-img-accent" src="https://images.unsplash.com/photo-1530521954074-e64f6810b32d?w=400&q=80" alt="Adventure">
+      </div>
+      <div class="about-content">
+        <div class="about-badge">
+          <span>✦ Who We Are</span>
+        </div>
+        <h2>India's Most Trusted Travel Partner</h2>
+        <p>WanderLux is one of India's most celebrated travel and tour management companies. We are big believers in living life full of adventure, chasing your wildest dreams, and truly embracing the spirit of exploration.</p>
+        <p>With expertly curated itineraries, personalized service, and deep local knowledge — we help you make the most of every journey, from mountain peaks to tropical shores.</p>
+        <div class="stats-row">
+          <div class="stat">
+            <div class="stat-num">12K+</div>
+            <div class="stat-label">Happy Travellers</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">150+</div>
+            <div class="stat-label">Destinations</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">8 Yrs</div>
+            <div class="stat-label">Of Excellence</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">4.9★</div>
+            <div class="stat-label">Avg Rating</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">Wander<span>Lux</span></a>
+        <p>We believe in the power of travel — and in helping you make the most of every trip. From iconic landmarks to hidden gems, we craft journeys that transform.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#destinations">Destinations</a></li>
+          <li><a href="#themes">Experiences</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Popular Trips</h4>
+        <ul>
+          <li><a href="#">Kashmir Tour</a></li>
+          <li><a href="#">Kerala Backwaters</a></li>
+          <li><a href="#">Rajasthan Heritage</a></li>
+          <li><a href="#">Maldives Escape</a></li>
+          <li><a href="#">Dubai City Tour</a></li>
+        </ul>
+      </div>
+      <div class="footer-col footer-contact">
+        <h4>Contact Us</h4>
+        <p><strong>📍</strong> New Delhi, India — 110025</p>
+        <p><strong>📞</strong> +91 98765 43210</p>
+        <p><strong>✉️</strong> hello@wanderlux.in</p>
+        <p><strong>⏰</strong> Mon–Sat: 9am – 7pm</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 WanderLux Pvt Ltd. All rights reserved.</p>
+      <div class="social-links">
+        <a href="#" class="social-link">f</a>
+        <a href="#" class="social-link">in</a>
+        <a href="#" class="social-link">ig</a>
+        <a href="#" class="social-link">tw</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- CONTACT POPUP -->
+<div id="popupForm" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <span class="close-btn" onclick="closePopup()">×</span>
+    <h2>Contact Us</h2>
+
+    <form action="https://formsubmit.co/rahmanmojibur25@gmail.com" method="POST">
+
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_subject" value="New Website Contact!">
+
+      <input type="text" name="name" placeholder="Your Name" required>
+
+      <input type="email" name="email" placeholder="Your Email" required>
+
+      <input type="text" name="subject" placeholder="Subject" required>
+
+      <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+</div>
+
+<style>
+.popup-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+.popup-box{
+  background:#fff;
+  width:90%;
+  max-width:450px;
+  padding:30px;
+  border-radius:10px;
+  position:relative;
+  animation:popup 0.4s ease;
+}
+
+@keyframes popup{
+  from{transform:scale(0.8);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+.close-btn{
+  position:absolute;
+  right:15px;
+  top:10px;
+  font-size:28px;
+  cursor:pointer;
+}
+
+.popup-box h2{
+  margin-bottom:20px;
+  text-align:center;
+}
+
+.popup-box input,
+.popup-box textarea{
+  width:100%;
+  padding:12px;
+  margin-bottom:15px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  font-size:15px;
+}
+
+.popup-box button{
+  width:100%;
+  padding:12px;
+  background:#1a3a2a;
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.popup-box button:hover{
+  background:#2c5f42;
+}
+</style>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.hero-slide');
+const dots = document.querySelectorAll('.hero-dot');
+function goToSlide(n){
+  slides[currentSlide].classList.remove('active');
+  dots[currentSlide].classList.remove('active');
+  currentSlide = n;
+  slides[currentSlide].classList.add('active');
+  dots[currentSlide].classList.add('active');
+}
+setInterval(()=>{goToSlide((currentSlide+1)%slides.length)}, 5000);
+
+
+function closePopup(){
+  document.getElementById("popupForm").style.display="none";
+}
+
+window.onload = function(){
+  setTimeout(()=>{
+    document.getElementById("popupForm").style.display="flex";
+  },2000);
+}
+
+
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 80);
+});
+</script>
+</body>
+</html>
